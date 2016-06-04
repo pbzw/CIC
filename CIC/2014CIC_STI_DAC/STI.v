@@ -12,13 +12,13 @@ input pi_end,
 output so_valid,
 output reg so_data
 );
-reg [3:0]nstate;
-reg [3:0]state;
+reg [1:0]nstate;
+reg [1:0]state;
 reg [31:0]data;
 reg [4:0]counter;
 
 wire enable;
-parameter idle=4'b0001,load_data=4'b0011,busy=4'b0111,finish=4'b1111;
+parameter idle=2'b00,load_data=2'b01,busy=2'b10,finish=2'b1;
 
 assign enable=(state==busy);
 assign so_valid=(state==busy)|(state==finish);
@@ -26,7 +26,7 @@ assign so_valid=(state==busy)|(state==finish);
 
 
 
-always@(posedge clk)
+always@(posedge clk,posedge rst)
 begin
 	if(rst)
 	state<=idle;
@@ -62,7 +62,7 @@ end
 
 
 
-always @(posedge clk)
+always @(posedge clk,posedge rst)
 begin
 	if(rst)
 		data<=32'd0;
@@ -86,14 +86,14 @@ begin
 	 else if(enable)
 		begin
 				if(pi_msb)
-				data<=data<<1;
+				data<=data<<1'b1;
 				else
-				data<=data>>1;
+				data<=data>>1'b1;
 		end
 	 
 end
 
-always @(posedge clk)
+always @(posedge clk,posedge rst)
 begin
 	if(rst)
 		counter<=5'd0;
@@ -109,6 +109,7 @@ begin
 	else if(enable)
 		counter<=counter-5'd1;
 end
+
 always@(*)
 begin
 	case(pi_length)
@@ -148,6 +149,7 @@ begin
 			end
 	endcase
 end
+
 endmodule
 
 

@@ -8,7 +8,7 @@ output reg[WIDTH-1:0] count
 parameter zero={(WIDTH){1'b0}};
 
 
-always@(posedge clk)
+always@(posedge clk,posedge rst)
 begin
 	if(rst)
 	count<=zero;

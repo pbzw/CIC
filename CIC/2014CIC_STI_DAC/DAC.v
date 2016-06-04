@@ -29,7 +29,7 @@ assign oem_addr=data_count[5:1];
 assign oem_finish=(state==finish);
 
 
-bit_8_buffer a(
+bit_8_buffer bit_8_buffer(
 .clk(clk),
 .rst(rst),
 .enable(so_valid),
@@ -39,7 +39,7 @@ bit_8_buffer a(
 );
 
 
-always@(posedge clk)
+always@(posedge clk,posedge rst)
 begin
 	if(rst)
 	state<=idle;
@@ -65,7 +65,7 @@ begin
 	endcase
 end
 
-odd_even b(
+odd_even odd_even(
 .clk(clk),
 .rst(rst),
 .enable((state==write)),
@@ -164,14 +164,14 @@ input enable,
 output reg signal
 );
 
-always@(posedge clk)
+always@(posedge clk,posedge rst)
 begin
 	if(rst)
-	signal=1'b1;
-	else if(enable)
 	signal=1'b0;
-	else
+	else if(enable)
 	signal=1'b1;
+	else
+	signal=1'b0;
 end
 
 endmodule
@@ -188,7 +188,7 @@ reg [15:0]oe;
 assign odd=(oe[15]==1);
 assign even=(oe[15]==0);
 
-always@(posedge clk)
+always@(posedge clk,posedge rst)
 begin
 	if(rst)
 	oe<=16'b1010101001010101;

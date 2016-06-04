@@ -5,14 +5,14 @@ input enable,
 input data_in,
 
 output[7:0] data_out,
-output reg valid
+output  valid
 );
 reg [7:0] data;
-reg [2:0] count;
+reg [3:0] count;
 
-assign data_out=data;
+assign data_out={data[6:0],data_in};
 
-always@(posedge clk)
+always@(posedge clk,posedge rst)
 begin
 	if(rst)
 	data<=8'd0;
@@ -20,21 +20,20 @@ begin
 	data<={data[6:0],data_in};
 end
 
-always@(posedge clk)
+always@(posedge clk,posedge rst)
 begin
 	if(rst)
-	count<=3'd0;
+	count<=4'd0;
 	else if(enable)
-	count<=count+3'd1;
+	count<=(count==4'd8)?4'd1:count+4'd1;
+	else
+	count<=4'd0;
 end
 
-always@(posedge clk)
-begin
-	if(rst)
-	valid<=0;
-	else 
-	valid<=(count==3'd7);
-end
+
+assign	valid=(count==4'd8);
+
+
 endmodule
 
 
@@ -52,7 +51,7 @@ reg [7:0] data;
 
 assign data_out=data;
 
-always@(posedge clk)
+always@(posedge clk,posedge rst)
 begin
 	if(rst)
 	data<=8'd0;

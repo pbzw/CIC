@@ -9,7 +9,7 @@ output reg[WIDTH-1:0] data_out
 parameter zero={(WIDTH){1'b0}};
 
 
-always@(posedge clk)
+always@(posedge clk,posedge rst)
 begin
 	if(rst)
 	data_out<=zero;
