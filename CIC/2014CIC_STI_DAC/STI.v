@@ -18,7 +18,7 @@ reg [31:0]data;
 reg [4:0]counter;
 
 wire enable;
-parameter idle=2'b00,load_data=2'b01,busy=2'b10,finish=2'b1;
+parameter idle=2'b00,load_data=2'b01,busy=2'b10,finish=2'b11;
 
 assign enable=(state==busy);
 assign so_valid=(state==busy)|(state==finish);

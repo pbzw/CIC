@@ -10,7 +10,7 @@ output  valid
 reg [7:0] data;
 reg [3:0] count;
 
-assign data_out={data[6:0],data_in};
+assign data_out=data;
 
 always@(posedge clk,posedge rst)
 begin
